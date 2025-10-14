@@ -3,6 +3,7 @@
 namespace App\Livewire\Media;
 
 use App\Models\Content;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class RemoveContent extends Component
@@ -17,9 +18,14 @@ class RemoveContent extends Component
     public function remove()
     {
         $content = Content::findOrFail($this->content);
+
+        $disk = Storage::disk('public');
+        if($disk->exists($content->cover)) $disk->delete($content->cover);
+
         $content->delete();
 
-        $this->dispatch('content_removed_' . $this->content);
+        session()->flash('success', 'Conteúdo removido com sucesso!');
+        return redirect()->route('media.contents.index');
     }
 
     public function render()

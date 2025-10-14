@@ -28,6 +28,11 @@ Route::prefix('/media')
     Route::get(
         '/contents/{content}/edit',
         \App\Livewire\Media\EditContent::class)->name('edit');
+
+
+    Route::get(
+        '/contents/{content}/videos/upload',
+        \App\Livewire\Media\VideoUpload::class)->name('videos.upload');
 });
 
 

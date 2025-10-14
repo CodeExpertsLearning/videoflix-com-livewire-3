@@ -4,10 +4,12 @@ namespace App\Livewire\Media;
 
 use App\Livewire\Forms\ContentForm;
 use App\Models\Content;
-use Livewire\Component;
+use Livewire\{WithFileUploads, Component};
 
 class EditContent extends Component
 {
+    use WithFileUploads;
+
     public $content;
 
     public $labelButton = 'Atualizar Conteúdo';

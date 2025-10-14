@@ -3,13 +3,14 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Content;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Livewire\Attributes\Rule;
 
 class ContentForm extends Form
 {
-    #[Rule('required|min:30')]
+    #[Rule('required|min:10')]
     public string $title;
 
     #[Rule('nullable|min:30')]
@@ -21,13 +22,16 @@ class ContentForm extends Form
     #[Rule('required')]
     public string  $slug;
 
-    public string  $cover;
+    #[Rule('nullable|image')]
+    public $cover;
 
     #[Rule('required')]
     public string  $status = 'DRAFT';
 
     #[Rule('required')]
     public string  $type = 'MOVIE';
+
+    public ?string $coverReal;
 
     public function setContent(Content $content)
     {
@@ -37,6 +41,7 @@ class ContentForm extends Form
         $this->type = $content->type;
         $this->status = $content->status;
         $this->slug = $content->slug;
+        $this->coverReal = $content->cover;
     }
 
     public function save(): bool
@@ -45,6 +50,7 @@ class ContentForm extends Form
 
         $data = $this->all();
         $data['code'] = str()->uuid();
+        $data['cover'] = $data['cover']?->store('contents', 'public');
 
         Content::create($data);
 
@@ -56,8 +62,16 @@ class ContentForm extends Form
         $this->validate();
 
         $data = $this->all();
-
         $content = Content::find($content);
+
+        if($data['cover']) {
+            $disk = Storage::disk('public');
+
+            if($content->cover && $disk->exists($content->cover))
+                $disk->delete($content->cover);
+
+            $data['cover'] = $data['cover']->store('contents', 'public');
+        }
 
         return $content->update($data);
     }
