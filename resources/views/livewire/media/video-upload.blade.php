@@ -40,7 +40,7 @@
             </div>
             <!-- Progress Bar -->
 
-            @error('form.cover')
+            @error('videos.*')
                 <div class="p-4 rounded border border-red-900 bg-red-300 text-red-900 my-4">
                     {{ $message }}
                 </div>
@@ -52,5 +52,6 @@
                     text-white font-bold hover:bg-green-900 transition ease-in-out duration-300">
             Realizar Upload
         </button>
+        <h2 class="font-bold text-white ml-4 text-xl" wire:loading wire:target="storeVideos">Enviando</h2>
     </form>
 </div>

@@ -38,6 +38,16 @@ return [
             'report' => false,
         ],
 
+        'videos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/videos'),
+        ],
+
+        'videos_encoded' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/videos_encoded'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
